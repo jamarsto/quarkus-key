@@ -37,6 +37,3 @@ quarkus:
   key:
     certificate:
       location: file:/keyfiles/tls.crt
-  quarkus:
-    http:
-      port: 8080
