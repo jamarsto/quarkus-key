@@ -32,7 +32,7 @@ quarkus:
       location: tls.crt
   quarkus:
     http:
-      port: 8080
+      port: 8082
 
 # production profile configuration
 "%prod":
