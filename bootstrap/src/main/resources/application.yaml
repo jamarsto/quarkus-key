@@ -1,0 +1,44 @@
+# Build time configuration & dev services configuration
+quarkus:
+  container-image:
+    group: ${docker_group}
+    name: ${docker_name}
+    password: ${DOCKER_HUB_TOKEN}
+    push: ${docker_push}
+    registry: ${docker_registry}
+    tag: ${docker_tag}
+    username: ${docker_username}
+  kubernetes:
+    deploy: ${kubernetes_deploy}
+    mounts:
+      public-key-volume:
+        path: /keyfiles
+    name: ${kubernetes_name}
+    namespace: ${kubernetes_namespace}
+    secret-volumes:
+      public-key-volume:
+        secret-name: token-service
+  http:
+    port: 8080
+  jib:
+    base-jvm-image: ${jib_base_jvm_image}
+    base-registry-username: ${jib_base_registry_username}
+    base-registry-password: ${DOCKER_HUB_TOKEN}
+
+# development profile configuration
+"%dev":
+  key:
+    certificate:
+      location: tls.crt
+  quarkus:
+    http:
+      port: 8080
+
+# production profile configuration
+"%prod":
+  key:
+    certificate:
+      location: file:/keyfiles/tls.crt
+  quarkus:
+    http:
+      port: 8080

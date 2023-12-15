@@ -1,0 +1,55 @@
+plugins {
+    id 'java-library'
+    id 'io.freefair.lombok'
+    id 'io.quarkus'
+    id 'org.kordamp.gradle.jandex'
+    id 'maven-publish'
+}
+
+// repository for publishing artifacts
+publishing {
+    publications {
+        maven(MavenPublication) {
+            artifactId = 'key-framework-output'
+            version = '0.0.1-SNAPSHOT'
+        }
+    }
+    repositories {
+        maven {
+            url 'https://pkgs.dev.azure.com/jamarston/762ffd9e-ca64-466d-84e9-7a0e42e5d89a/_packaging/Artifacts/maven/v1'
+            name 'Artifacts'
+            credentials {
+                username "jamarston"
+                password "${System.env.ARTIFACT_TOKEN}"
+            }
+        }
+    }
+}
+
+archivesBaseName = 'key-framework-output'
+group = 'uk.co.jasonmarston.kiunzi'
+version = '0.0.1-SNAPSHOT'
+
+dependencies {
+    implementation enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}")
+
+    implementation project(':application-output')
+
+    implementation 'io.quarkus:quarkus-arc'
+
+    testImplementation 'io.quarkus:quarkus-junit5'
+    testImplementation 'io.rest-assured:rest-assured'
+
+    nativeTestImplementation 'io.quarkus:quarkus-junit5'
+    nativeTestImplementation 'io.rest-assured:rest-assured'
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(20)
+    }
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
