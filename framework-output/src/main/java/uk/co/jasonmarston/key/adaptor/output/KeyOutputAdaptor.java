@@ -41,9 +41,9 @@ public class KeyOutputAdaptor implements KeyOutputPort {
 				.getContextClassLoader()
 				.getResourceAsStream(certificateLocation);
 			final X509Certificate certificate =
-					(X509Certificate) CertificateFactory
-						.getInstance(CERTIFICATE_TYPE)
-						.generateCertificate(inputStream);
+				(X509Certificate) CertificateFactory
+					.getInstance(CERTIFICATE_TYPE)
+					.generateCertificate(inputStream);
 			final RSAPublicKey publicKey = (RSAPublicKey) certificate
 				.getPublicKey();
 			tmpPemString = convertToPEM(publicKey);
