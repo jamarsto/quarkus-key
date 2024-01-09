@@ -8,6 +8,10 @@ quarkus:
     registry: ${docker_registry}
     tag: ${docker_tag}
     username: ${docker_username}
+  jib:
+    base-jvm-image: ${jib_base_jvm_image}
+    base-registry-username: ${jib_base_registry_username}
+    base-registry-password: ${DOCKER_HUB_TOKEN}
   kubernetes:
     deploy: ${kubernetes_deploy}
     mounts:
@@ -17,11 +21,7 @@ quarkus:
     namespace: ${kubernetes_namespace}
     secret-volumes:
       public-key-volume:
-        secret-name: token-service
-  jib:
-    base-jvm-image: ${jib_base_jvm_image}
-    base-registry-username: ${jib_base_registry_username}
-    base-registry-password: ${DOCKER_HUB_TOKEN}
+        secret-name: token-secrets
 
 # development profile configuration
 "%dev":
@@ -36,4 +36,7 @@ quarkus:
 "%prod":
   key:
     certificate:
-      location: file:/keyfiles/tls.crt
+      location: /keyfiles/tls.crt
+  quarkus:
+    http:
+      port: 8080

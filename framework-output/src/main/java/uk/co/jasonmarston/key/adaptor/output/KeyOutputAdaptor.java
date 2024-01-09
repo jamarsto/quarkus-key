@@ -1,18 +1,24 @@
 package uk.co.jasonmarston.key.adaptor.output;
 
+import io.smallrye.config.SmallRyeConfig;
 import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
+import org.eclipse.microprofile.config.ConfigProvider;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import uk.co.jasonmarston.key.output.port.KeyOutputPort;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.security.interfaces.RSAPublicKey;
 import java.util.Base64;
+import java.util.List;
 
 @ApplicationScoped
 @Slf4j
@@ -36,10 +42,8 @@ public class KeyOutputAdaptor implements KeyOutputPort {
 	) {
 		String tmpPemString = null;
 		try {
-			final InputStream inputStream = Thread
-				.currentThread()
-				.getContextClassLoader()
-				.getResourceAsStream(certificateLocation);
+			final InputStream inputStream =
+				getInputStream(certificateLocation);
 			final X509Certificate certificate =
 				(X509Certificate) CertificateFactory
 					.getInstance(CERTIFICATE_TYPE)
@@ -61,7 +65,7 @@ public class KeyOutputAdaptor implements KeyOutputPort {
 			.item(pemString);
 	}
 
-	private String convertToPEM(final RSAPublicKey publicKey) {
+	private static String convertToPEM(final RSAPublicKey publicKey) {
 		final byte[] publicKeyBytes = publicKey.getEncoded();
 		final String publicKeyBase64 = Base64
 			.getEncoder()
@@ -85,5 +89,37 @@ public class KeyOutputAdaptor implements KeyOutputPort {
 		builder.append(END_PUBLIC_KEY);
 
 		return builder.toString();
+	}
+
+	private static InputStream getInputStream(
+			final String certificateLocation
+	) throws CertificateException {
+		if(isProduction()) {
+			try {
+				return new FileInputStream(certificateLocation);
+			} catch (final FileNotFoundException e) {
+				throw new CertificateException(e);
+			}
+		}
+		else {
+			return Thread
+					.currentThread()
+					.getContextClassLoader()
+					.getResourceAsStream(certificateLocation);
+		}
+	}
+
+	private static boolean isProduction() {
+		if(getProfiles().contains("prod")) {
+			return true;
+		}
+		return false;
+	}
+
+	private static List<String> getProfiles() {
+		return ConfigProvider
+				.getConfig()
+				.unwrap(SmallRyeConfig.class)
+				.getProfiles();
 	}
 }
