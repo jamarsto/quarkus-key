@@ -7,34 +7,23 @@ import lombok.extern.slf4j.Slf4j;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import uk.co.jasonmarston.key.output.port.KeyOutputPort;
 
-import java.security.cert.CertificateException;
-import java.security.interfaces.RSAPublicKey;
-
 @ApplicationScoped
 @Slf4j
 public class KeyOutputAdaptor implements KeyOutputPort {
-    private static final String ERROR_MESSAGE =
-        "Certificate Not Loaded From: {}";
-
-    private String pemString;
+    private final String pemString;
 
     @Inject
     public KeyOutputAdaptor(
         @ConfigProperty(name = "key.certificate.location")
         final String certificateLocation
     ) {
-        try {
-            final RSAPublicKey publicKey = RSAPublicKeyUtility
-                .getInstance()
-                .getPublicKey(certificateLocation);
-            this.pemString = PEMUtility
-                .getInstance()
-                .convertToPEM(publicKey);
-        }
-        catch(final CertificateException ce) {
-            log.error(ERROR_MESSAGE, certificateLocation);
-            this.pemString = null;
-        }
+        this.pemString = PEMUtility
+            .getInstance()
+            .convertToPEM(
+                RSAPublicKeyUtility
+                    .getInstance()
+                    .getPublicKey(certificateLocation)
+            );
     }
 
     @Override

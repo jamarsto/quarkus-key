@@ -20,6 +20,10 @@ class PEMUtility {
     }
 
     public String convertToPEM(final RSAPublicKey publicKey) {
+        if(null == publicKey) {
+            return null;
+        }
+
         final byte[] publicKeyBytes = publicKey.getEncoded();
         final String publicKeyBase64 = Base64
             .getEncoder()
