@@ -12,24 +12,24 @@ import uk.co.jasonmarston.key.usecase.KeyUseCase;
 @ApplicationScoped
 @Path("/service-api")
 public class ServiceKeyInputAdaptor {
-	private static final Response NOT_FOUND = Response
-		.status(Status.NOT_FOUND)
-		.build();
+    private static final Response NOT_FOUND = Response
+        .status(Status.NOT_FOUND)
+        .build();
 
-	@Inject
-	private KeyUseCase keyUseCase;
+    @Inject
+    private KeyUseCase keyUseCase;
 
-	@GET
-	@Path("/pem")
-	public Uni<Response> readKey() {
-		return keyUseCase
-			.readKey()
-			.onItem()
-			.transform(pemString -> Response
-				.ok(pemString)
-				.build()
-			)
-			.onFailure()
-			.recoverWithItem(NOT_FOUND);
-	} 
+    @GET
+    @Path("/pem")
+    public Uni<Response> readKey() {
+        return keyUseCase
+            .readKey()
+            .onItem()
+            .transform(pemString -> Response
+                .ok(pemString)
+                .build()
+            )
+            .onFailure()
+            .recoverWithItem(NOT_FOUND);
+    }
 }

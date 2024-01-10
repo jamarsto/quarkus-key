@@ -8,11 +8,11 @@ import uk.co.jasonmarston.key.usecase.KeyUseCase;
 
 @ApplicationScoped
 public class KeyInputPort implements KeyUseCase {
-	@Inject
-	private KeyOutputPort keyOutputPort;
+    @Inject
+    private KeyOutputPort keyOutputPort;
 
-	@Override
-	public Uni<String> readKey() {
+    @Override
+    public Uni<String> readKey() {
 		return keyOutputPort.readKey();
 	}
 }

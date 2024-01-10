@@ -1,6 +1,6 @@
 module application.output {
-	requires static lombok;
-	requires transitive io.smallrye.mutiny;
+    requires static lombok;
+    requires transitive io.smallrye.mutiny;
 
-	exports uk.co.jasonmarston.key.output.port;
+    exports uk.co.jasonmarston.key.output.port;
 }
