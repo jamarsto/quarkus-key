@@ -13,7 +13,6 @@ public class KeyInputPort implements KeyUseCase {
 
     @Override
     public Uni<String> readKey() {
-		return keyOutputPort.readKey();
-	}
+        return keyOutputPort.readKey();
+    }
 }
-
