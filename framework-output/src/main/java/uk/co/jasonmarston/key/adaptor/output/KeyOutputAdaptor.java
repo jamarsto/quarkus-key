@@ -36,7 +36,7 @@ public class KeyOutputAdaptor implements KeyOutputPort {
     ) {
         String tmpPemString = null;
         try {
-            final InputStream inputStream =	InputStreamUtility
+            final InputStream inputStream = InputStreamUtility
                 .getInstance()
                 .getInputStream(certificateLocation);
             final X509Certificate certificate =
