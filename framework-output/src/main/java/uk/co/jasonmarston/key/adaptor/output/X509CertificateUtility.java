@@ -18,8 +18,8 @@ class X509CertificateUtility {
 
     public X509Certificate getCertificate(final String certificateLocation) throws CertificateException {
         final InputStream inputStream = InputStreamUtility
-                .getInstance()
-                .getInputStream(certificateLocation);
+            .getInstance()
+            .getInputStream(certificateLocation);
 
         return (X509Certificate) CertificateFactory
             .getInstance(CERTIFICATE_TYPE)

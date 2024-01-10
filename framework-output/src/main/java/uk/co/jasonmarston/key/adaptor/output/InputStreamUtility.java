@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 class InputStreamUtility {
-
     private static final InputStreamUtility INSTANCE = new InputStreamUtility();
 
     public static InputStreamUtility getInstance() {
