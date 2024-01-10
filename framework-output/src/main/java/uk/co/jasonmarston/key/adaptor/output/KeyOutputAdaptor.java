@@ -39,6 +39,11 @@ public class KeyOutputAdaptor implements KeyOutputPort {
 
     @Override
     public Uni<String> readKey() {
+        if(null == pemString) {
+            return Uni
+                .createFrom()
+                .nullItem();
+        }
         return Uni
             .createFrom()
             .item(pemString);
