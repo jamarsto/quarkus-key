@@ -29,7 +29,7 @@ version = '0.0.1-SNAPSHOT'
 ext {
     docker_group = 'jasonmarstoncouk'
     docker_name = 'key'
-    docker_push = true
+    docker_push = 'true'
     docker_registry = 'registry.hub.docker.com'
     docker_tag = 'latest'
     docker_username = 'jasonmarstoncouk'
